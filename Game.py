@@ -1,10 +1,9 @@
 import pygame
-from pygame.locals import *
 import math
 
 
 def addLife(r, c):
-    grid[r * cols + c] = '#'
+    grid[r * cols + c] = 1
     life.add(r * cols + c)
     undo.append(r * cols + c)
 
@@ -20,7 +19,7 @@ def checkLife():
             for c in range(c_col - 1, c_col + 2):
                 if r == c_row and c == c_col:
                     continue
-                if grid[r * cols + c] == '#':
+                if grid[r * cols + c] == 1:
                     count += 1
                 else:
                     if r * cols + c in p_life:
@@ -35,13 +34,13 @@ def createLife():
     for key in p_life:
         if p_life.get(key) == 3:
             life.add(key)
-            grid[key] = '#'
+            grid[key] = 1
 
 
 def die():
     for i in death:
         life.remove(i)
-        grid[i] = '.'
+        grid[i] = 0
 
 
 def sequence():
@@ -67,7 +66,7 @@ width = 100
 origin_r = int(rows / 2 - height / 2)
 origin_c = int(cols / 2 - width / 2)
 
-grid = ['.'] * (rows * cols)
+grid = [0] * (rows * cols)
 life = set()
 death = set()
 p_life = {}
@@ -115,7 +114,7 @@ while run:
                 mDown = False
             if event.key == pygame.K_z and not ready:
                 if len(undo) > 0:
-                    grid[undo[0]] = '.'
+                    grid[undo[0]] = 0
                     life.remove(undo[0])
                     del undo[0]
         if event.type == pygame.MOUSEBUTTONDOWN and not ready:
